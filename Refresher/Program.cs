@@ -26,8 +26,11 @@ namespace Refresher
             //string result = Kata.PigIt(sentence);
             //Console.WriteLine($"Kata 3 - PigIt ===> {result}");
 
-            bool result = Kata.ValidParentheses(sentence);
-            Console.WriteLine($"Kata 4 - ValidParenthesis ===> {result}");
+            //bool result = Kata.ValidParentheses(sentence);
+            //Console.WriteLine($"Kata 4 - ValidParenthesis ===> {result}");
+
+            HashSet<string> result = Kata.Check1800(sentence);
+            Console.WriteLine($"Kata 4 - Check 1800 ===> {result.First()}");
 
             Console.ReadKey();
         }
@@ -93,6 +96,64 @@ namespace Refresher
                 }
             }
             return pending == 0 && valid ? true : false;
+        }
+
+
+        public static HashSet<string> Check1800(string str)
+        {
+            string answer = "1-800-";
+            for(int i = 6; i < str.Length; i++)
+            {
+                switch (str[i])
+                {
+                    case 'A':
+                    case 'B':
+                    case 'C':
+                        answer += '2';
+                        break;
+                    case 'D':
+                    case 'E':
+                    case 'F':
+                        answer += '3';
+                        break;
+                    case 'G':
+                    case 'H':
+                    case 'I':
+                        answer += '4';
+                        break;
+                    case 'J':
+                    case 'K':
+                    case 'L':
+                        answer += '5';
+                        break;
+                    case 'M':
+                    case 'N':
+                    case 'O':
+                        answer += '6';
+                        break;
+                    case 'P':
+                    case 'Q':
+                    case 'R':
+                    case 'S':
+                        answer += '7';
+                        break;
+                    case 'T':
+                    case 'U':
+                    case 'V':
+                        answer += '8';
+                        break;
+                    case 'W':
+                    case 'X':
+                    case 'Y':
+                    case 'Z':
+                        answer += '9';
+                        break;
+                    default:
+                        answer += str[i];
+                        break;
+                }
+            }
+            return new HashSet<string>() { answer };
         }
     }
 }
