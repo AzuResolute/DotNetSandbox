@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,15 @@ namespace Refresher
             Console.WriteLine($"Kata 4 - Check 1800 ===> {result.First()}");
 
             Console.ReadKey();
+        }
+
+        protected static void Page_Load(object sender, EventArgs e)
+        {
+            SqlConnection con = new SqlConnection("data source=.; database=Sample; integrated security=SSPI");
+            SqlCommand cmd = new SqlCommand();
+            con.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            
         }
     }
 
