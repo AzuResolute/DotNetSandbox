@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Configuration;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,16 +12,28 @@ namespace Refresher
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine("Hello Again");
-            //Console.WriteLine();
-            //Console.WriteLine("Select A Number");
-            //Console.WriteLine();
+            Console.WriteLine("Hello Again");
+            Console.WriteLine();
+            //string sentence = Console.ReadLine();
+
+            Console.WriteLine();
+            Console.WriteLine("Select an ID");
+            int id = int.Parse(Console.ReadLine());
+
+            Console.WriteLine();
+            Console.WriteLine("Select a new category name");
+            string newcat = Console.ReadLine();
+
+            Console.WriteLine();
+            Console.WriteLine("Select a new description");
+            string newdesc = Console.ReadLine();
+
+
 
             //long.TryParse(Console.ReadLine(), out long query); 
             //long rowSumOddNumbersResult = Kata.rowSumOddNumbers(query);
             //Console.WriteLine($"Kata 1 - rowSum ===> {rowSumOddNumbersResult}");
 
-            //string sentence = Console.ReadLine();
             ////string result = Kata.High(sentence);
             ////Console.WriteLine($"Kata 2 - high ===> {result}");
 
@@ -33,25 +46,33 @@ namespace Refresher
             //HashSet<string> result = Kata.Check1800(sentence);
             //Console.WriteLine($"Kata 4 - Check 1800 ===> {result.First()}");
 
-            ADONetPractice("Hello");
+            //ADOReadTable(sentence);
+            //Console.WriteLine();
+            //ADOTableSize(sentence);
+
+            //ADOCategoryInsert(newcat, newdesc);
+            ADOUpdate(id, newcat, newdesc);
 
             Console.ReadKey();
         }
 
-        protected static void ADONetPractice(string input)
-        {
-            string CS = "data source=localhost; database = Northwind; integrated security=SSPI";
-            
-            using (SqlConnection con = new SqlConnection(CS))
+        public static void ADOReadTable(string input)
+        {   
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["databaseCS"].ConnectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Customers", con);
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = $"SELECT * FROM {input}";
+                cmd.Connection = con;
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
                     while (reader.Read())
                     {
-                        Console.WriteLine($"{reader.GetString(0)}\t{reader.GetString(1)}\t{reader.GetString(2)}");
+                        Console.WriteLine($"" +
+                            $"{reader.GetInt32(0)}\t" +
+                            $"{reader.GetString(1)}\t" +
+                            $"{reader.GetString(2)}");
                     }
                 }
                 else
@@ -60,7 +81,75 @@ namespace Refresher
                 }
             }
         }
+        
+        public static void ADOTableSize(string input)
+        {
+            string PK = $"{input.Substring(0, input.Length - 1)}ID";
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["databaseCS"].ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand($"SELECT COUNT({PK}) FROM {input}", con);
+                con.Open();
+                int totalRows = (int)cmd.ExecuteScalar();
+                Console.WriteLine($"{PK} - {totalRows}");
+            }
+        }
+
+        public static void ADOCategoryInsert(string newcat, string newdesc)
+        {
+            int totalRows = 0;
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["databaseCS"].ConnectionString))
+            {
+                string findAllquery = $"SELECT * FROM Categories";
+                SqlCommand countCmd = new SqlCommand($"SELECT COUNT(CategoryID) FROM Categories", con);
+                SqlCommand findAllCmd = new SqlCommand(findAllquery, con);
+                con.Open();
+                totalRows = (int)countCmd.ExecuteScalar();
+                string insertQuery = $"INSERT into Categories (CategoryName, Description) VALUES ('{newcat}', '{newdesc}')";
+                SqlCommand insertCmd = new SqlCommand(insertQuery, con);
+                int affectewdRows = insertCmd.ExecuteNonQuery();
+                SqlDataReader reader = findAllCmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        Console.WriteLine(
+                            $"{reader.GetInt32(0)}\t" +
+                            $"{reader.GetString(1)}\t" +
+                            $"{reader.GetString(2)}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No rows found.");
+                }
+            }
+        }
+        public static void ADOUpdate(int id, string newcat, string newdesc)
+        {
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["databaseCS"].ConnectionString))
+            {
+                SqlCommand updateCmd = new SqlCommand($"Update Categories set CategoryName = @CategoryName, Description = @Description WHERE CategoryID = @CategoryID", con);
+                updateCmd.Parameters.AddWithValue("@CategoryID", id);
+                updateCmd.Parameters.AddWithValue("@CategoryName", newcat);
+                updateCmd.Parameters.AddWithValue("@Description", newdesc);
+                SqlCommand findAllCmd = new SqlCommand("Select * from Categories", con);
+                con.Open();
+                int affectedRows = updateCmd.ExecuteNonQuery();
+                SqlDataReader reader = findAllCmd.ExecuteReader();
+                if(reader.HasRows)
+                {
+                    while(reader.Read())
+                    {
+                        Console.WriteLine(
+                            $"{reader.GetInt32(0)}\t" +
+                            $"{reader.GetString(1)}");
+                    }
+                }
+
+            }
+        }
     }
+
 
     public static class Kata
     {
