@@ -11,38 +11,54 @@ namespace Refresher
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello Again");
-            Console.WriteLine();
-            Console.WriteLine("Select A Number");
-            Console.WriteLine();
+            //Console.WriteLine("Hello Again");
+            //Console.WriteLine();
+            //Console.WriteLine("Select A Number");
+            //Console.WriteLine();
 
             //long.TryParse(Console.ReadLine(), out long query); 
             //long rowSumOddNumbersResult = Kata.rowSumOddNumbers(query);
             //Console.WriteLine($"Kata 1 - rowSum ===> {rowSumOddNumbersResult}");
 
-            string sentence = Console.ReadLine();
-            //string result = Kata.High(sentence);
-            //Console.WriteLine($"Kata 2 - high ===> {result}");
+            //string sentence = Console.ReadLine();
+            ////string result = Kata.High(sentence);
+            ////Console.WriteLine($"Kata 2 - high ===> {result}");
 
-            //string result = Kata.PigIt(sentence);
-            //Console.WriteLine($"Kata 3 - PigIt ===> {result}");
+            ////string result = Kata.PigIt(sentence);
+            ////Console.WriteLine($"Kata 3 - PigIt ===> {result}");
 
-            //bool result = Kata.ValidParentheses(sentence);
-            //Console.WriteLine($"Kata 4 - ValidParenthesis ===> {result}");
+            ////bool result = Kata.ValidParentheses(sentence);
+            ////Console.WriteLine($"Kata 4 - ValidParenthesis ===> {result}");
 
-            HashSet<string> result = Kata.Check1800(sentence);
-            Console.WriteLine($"Kata 4 - Check 1800 ===> {result.First()}");
+            //HashSet<string> result = Kata.Check1800(sentence);
+            //Console.WriteLine($"Kata 4 - Check 1800 ===> {result.First()}");
+
+            ADONetPractice("Hello");
 
             Console.ReadKey();
         }
 
-        protected static void Page_Load(object sender, EventArgs e)
+        protected static void ADONetPractice(string input)
         {
-            SqlConnection con = new SqlConnection("data source=.; database=Sample; integrated security=SSPI");
-            SqlCommand cmd = new SqlCommand();
-            con.Open();
-            SqlDataReader reader = cmd.ExecuteReader();
+            string CS = "data source=localhost; database = Northwind; integrated security=SSPI";
             
+            using (SqlConnection con = new SqlConnection(CS))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Customers", con);
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        Console.WriteLine($"{reader.GetString(0)}\t{reader.GetString(1)}\t{reader.GetString(2)}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No rows found.");
+                }
+            }
         }
     }
 
