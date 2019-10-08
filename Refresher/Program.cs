@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Configuration;
@@ -14,19 +15,19 @@ namespace Refresher
         {
             Console.WriteLine("Hello Again");
             Console.WriteLine();
-            //string sentence = Console.ReadLine();
+            string sentence = Console.ReadLine();
 
-            Console.WriteLine();
-            Console.WriteLine("Select an ID");
-            int id = int.Parse(Console.ReadLine());
+            //Console.WriteLine();
+            //Console.WriteLine("Select an ID");
+            //int id = int.Parse(Console.ReadLine());
 
-            Console.WriteLine();
-            Console.WriteLine("Select a new category name");
-            string newcat = Console.ReadLine();
+            //Console.WriteLine();
+            //Console.WriteLine("Select a new category name");
+            //string newcat = Console.ReadLine();
 
-            Console.WriteLine();
-            Console.WriteLine("Select a new description");
-            string newdesc = Console.ReadLine();
+            //Console.WriteLine();
+            //Console.WriteLine("Select a new description");
+            //string newdesc = Console.ReadLine();
 
 
 
@@ -47,11 +48,12 @@ namespace Refresher
             //Console.WriteLine($"Kata 4 - Check 1800 ===> {result.First()}");
 
             //ADOReadTable(sentence);
+            ADOReadTableViaAdapter(sentence);
             //Console.WriteLine();
             //ADOTableSize(sentence);
 
             //ADOCategoryInsert(newcat, newdesc);
-            ADOUpdate(id, newcat, newdesc);
+            //ADOUpdate(id, newcat, newdesc);
 
             Console.ReadKey();
         }
@@ -93,19 +95,20 @@ namespace Refresher
                 Console.WriteLine($"{PK} - {totalRows}");
             }
         }
-
         public static void ADOCategoryInsert(string newcat, string newdesc)
         {
             int totalRows = 0;
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["databaseCS"].ConnectionString))
             {
                 string findAllquery = $"SELECT * FROM Categories";
-                SqlCommand countCmd = new SqlCommand($"SELECT COUNT(CategoryID) FROM Categories", con);
                 SqlCommand findAllCmd = new SqlCommand(findAllquery, con);
+                SqlCommand countCmd = new SqlCommand($"SELECT COUNT(CategoryID) FROM Categories", con);
                 con.Open();
                 totalRows = (int)countCmd.ExecuteScalar();
-                string insertQuery = $"INSERT into Categories (CategoryName, Description) VALUES ('{newcat}', '{newdesc}')";
+                string insertQuery = $"INSERT into Categories (CategoryName, Description) VALUES (@CategoryName, @Description)";
                 SqlCommand insertCmd = new SqlCommand(insertQuery, con);
+                insertCmd.Parameters.AddWithValue("@CategoryName", newcat);
+                insertCmd.Parameters.AddWithValue("@Description", newdesc);
                 int affectewdRows = insertCmd.ExecuteNonQuery();
                 SqlDataReader reader = findAllCmd.ExecuteReader();
                 if (reader.HasRows)
@@ -113,9 +116,9 @@ namespace Refresher
                     while (reader.Read())
                     {
                         Console.WriteLine(
-                            $"{reader.GetInt32(0)}\t" +
-                            $"{reader.GetString(1)}\t" +
-                            $"{reader.GetString(2)}");
+                            $"{reader["CategoryID"]}\t" +
+                            $"{reader["CategoryName"]}\t" +
+                            $"{reader["Description"]}");
                     }
                 }
                 else
@@ -148,6 +151,44 @@ namespace Refresher
 
             }
         }
+
+        public static void ADOReadTableViaAdapter(string input)
+        {
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["databaseCS"].ConnectionString))
+            {
+                SqlDataAdapter da = new SqlDataAdapter($"Select * from {input}", con);
+                DataSet ds = new DataSet();
+                // An in-memory representation of your database
+                // Can store tables and relationships between tables
+                // Present in the memory in the web server
+
+                // For stored procedure
+                //da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                //da.SelectCommand.Parameters.AddWithValue("@parametername","qeqeqeqe");
+                
+
+                da.Fill(ds);
+                // Will take care of opening, filling data, and closing connections
+
+                var reader = ds.CreateDataReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        Console.WriteLine(
+                            $"{reader["CategoryID"]}\t" +
+                            $"{reader["CategoryName"]}\t" +
+                            $"{reader["Description"]}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No rows found.");
+                }
+            }
+        }
+
     }
 
 
