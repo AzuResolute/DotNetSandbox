@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Data.OleDb;
 using System.Linq;
 using System.Configuration;
 using System.Text;
@@ -15,7 +16,7 @@ namespace Refresher
         {
             Console.WriteLine("Hello Again");
             Console.WriteLine();
-            string sentence = Console.ReadLine();
+            //string sentence = Console.ReadLine();
 
             //Console.WriteLine();
             //Console.WriteLine("Select an ID");
@@ -48,12 +49,14 @@ namespace Refresher
             //Console.WriteLine($"Kata 4 - Check 1800 ===> {result.First()}");
 
             //ADOReadTable(sentence);
-            ADOReadTableViaAdapter(sentence);
+            //ADOReadTableViaAdapter(sentence);
             //Console.WriteLine();
             //ADOTableSize(sentence);
 
             //ADOCategoryInsert(newcat, newdesc);
             //ADOUpdate(id, newcat, newdesc);
+            //ADOViewCategoriesAndProducts();
+            ADOReadFromExcel();
 
             Console.ReadKey();
         }
@@ -83,7 +86,6 @@ namespace Refresher
                 }
             }
         }
-        
         public static void ADOTableSize(string input)
         {
             string PK = $"{input.Substring(0, input.Length - 1)}ID";
@@ -151,12 +153,14 @@ namespace Refresher
 
             }
         }
-
         public static void ADOReadTableViaAdapter(string input)
         {
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["databaseCS"].ConnectionString))
             {
-                SqlDataAdapter da = new SqlDataAdapter($"Select * from {input}", con);
+                //SqlDataAdapter da = new SqlDataAdapter($"Select * from {input}", con);
+                SqlDataAdapter da = new SqlDataAdapter();
+                da.SelectCommand = new SqlCommand($"Select * from {input}", con);
+
                 DataSet ds = new DataSet();
                 // An in-memory representation of your database
                 // Can store tables and relationships between tables
@@ -165,7 +169,6 @@ namespace Refresher
                 // For stored procedure
                 //da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 //da.SelectCommand.Parameters.AddWithValue("@parametername","qeqeqeqe");
-                
 
                 da.Fill(ds);
                 // Will take care of opening, filling data, and closing connections
@@ -188,7 +191,73 @@ namespace Refresher
                 }
             }
         }
+        public static void ADOViewCategoriesAndProducts()
+        {
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["databaseCS"].ConnectionString);
+            SqlDataAdapter da = new SqlDataAdapter();
+            da.SelectCommand = new SqlCommand($"Select * from Categories; Select * from Products", con);
 
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            ds.Tables[0].TableName = "Categories";
+            ds.Tables[1].TableName = "Products";
+
+            for(int i = 0; i < ds.Tables.Count; i++)
+            {
+                var reader = ds.Tables[i].CreateDataReader();
+
+                if (reader.HasRows)
+                {
+                    Console.WriteLine($"*** {ds.Tables[i].TableName} ***");
+                    while (reader.Read())
+                    {
+                        Console.WriteLine(
+                            $"{reader[0]}\t" +
+                            $"{reader[1]}\t" +
+                            $"{reader[2]}");
+                    }
+                    Console.WriteLine();
+                }
+                else
+                {
+                    Console.WriteLine("No rows found.");
+                }
+            }
+        }
+        public static void ADOReadFromExcel()
+        {
+            using (OleDbConnection con = new OleDbConnection("provider=Microsoft.Jet.OLEDB.4.0; Data Source=C:\\Users\\roger\\Documents\\LaunchDay2019.xlsx; Extended Properties= Excel 8.0"))
+            {
+                OleDbDataAdapter da = new OleDbDataAdapter("Select * from [sheet2$]", con);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+
+                for (int i = 0; i < ds.Tables.Count; i++)
+                {
+                    var reader = ds.Tables[i].CreateDataReader();
+
+                    if (reader.HasRows)
+                    {
+                        Console.WriteLine($"*** {ds.Tables[i].TableName} ***");
+                        while (reader.Read())
+                        {
+                            Console.WriteLine(
+                                $"{reader[0]}\t" +
+                                //$"{reader[1]}\t" +
+                                $"{reader[1]}");
+                        }
+                        Console.WriteLine();
+                    }
+                    else
+                    {
+                        Console.WriteLine("No rows found.");
+                    }
+                }
+
+            }
+        }
+        
+        // SqlCommandBuilder builds the RUD given the select to a dataadapter
     }
 
 
