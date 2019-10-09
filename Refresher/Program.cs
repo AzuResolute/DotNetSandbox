@@ -234,17 +234,24 @@ namespace Refresher
 
                 for (int i = 0; i < ds.Tables.Count; i++)
                 {
-                    var reader = ds.Tables[i].CreateDataReader();
+                    DataTableReader reader = ds.Tables[i].CreateDataReader();
 
                     if (reader.HasRows)
                     {
                         Console.WriteLine($"*** {ds.Tables[i].TableName} ***");
+                        Console.WriteLine(
+                            $"{ds.Tables[i].Columns[0]}\t" +
+                            $"{ds.Tables[i].Columns[1]}\t" +
+                            $"{ds.Tables[i].Columns[6]}\t" +
+                            $"{ds.Tables[i].Columns[7]}"
+                            );
                         while (reader.Read())
                         {
                             Console.WriteLine(
                                 $"{reader[0]}\t" +
-                                //$"{reader[1]}\t" +
-                                $"{reader[1]}");
+                                $"{reader[1]}\t" +
+                                $"{reader[6]}\t" +
+                                $"{reader[7]}");
                         }
                         Console.WriteLine();
                     }
@@ -253,7 +260,7 @@ namespace Refresher
                         Console.WriteLine("No rows found.");
                     }
                 }
-
+                // Life is good
             }
         }
         
