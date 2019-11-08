@@ -48,9 +48,16 @@
     <Compile Include="Kata.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TreeSearch.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LinqLibrary\LinqLibrary.csproj">
+      <Project>{4e34579d-96ed-497d-8991-67393c67ee53}</Project>
+      <Name>LinqLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

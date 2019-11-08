@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Refresher", "Refresher\Refresher.csproj", "{3BC03B90-7C14-441E-9B7A-52863856D3D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqLibrary", "LinqLibrary\LinqLibrary.csproj", "{4E34579D-96ED-497D-8991-67393C67EE53}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{3BC03B90-7C14-441E-9B7A-52863856D3D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BC03B90-7C14-441E-9B7A-52863856D3D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BC03B90-7C14-441E-9B7A-52863856D3D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E34579D-96ED-497D-8991-67393C67EE53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E34579D-96ED-497D-8991-67393C67EE53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E34579D-96ED-497D-8991-67393C67EE53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E34579D-96ED-497D-8991-67393C67EE53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

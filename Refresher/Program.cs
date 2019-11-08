@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
-using System.Data.OleDb;
 using System.Linq;
-using System.Configuration;
 using System.Text;
 using System.Threading.Tasks;
-
+using LinqLibrary;
 
 namespace Refresher
 {
@@ -15,8 +12,8 @@ namespace Refresher
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello Again");
-            Console.WriteLine();
+            //Console.WriteLine("Hello Again");
+            //Console.WriteLine();
             //string sentence = Console.ReadLine();
 
             //Console.WriteLine();
@@ -55,7 +52,40 @@ namespace Refresher
             //ADOPractice.ADOCategoryInsert(newcat, newdesc);
             //ADOPractice.ADOUpdate(id, newcat, newdesc);
             //ADOPractice.ADOViewCategoriesAndProducts();
-            ADOPractice.ADOReadFromExcel();
+            //ADOPractice.ADOReadFromExcel();
+
+            //Console.WriteLine();
+            //Console.WriteLine("Breadth First Search");
+            //Console.WriteLine();
+
+
+            //List<string> results = TreeSearch.RunBreadthFirstSearch();
+            //foreach(string result in results)
+            //{
+            //    Console.WriteLine(result);
+            //}
+
+
+            //Console.WriteLine();
+            //Console.WriteLine("Depth First Search");
+            //Console.WriteLine();
+
+            //results = TreeSearch.RunDepthFirstSearchRecursive();
+            //foreach (string result in results)
+            //{
+            //    Console.WriteLine(result);
+            //}
+
+
+            List<Activity> activities = ListManager.LoadSampleData()
+                .Where(act => act.Category == "Social")
+                .OrderByDescending(act => act.Attendees)
+                .ThenByDescending(act => act.StartDate)
+                .ToList();
+
+            ListManager.WriteAll(activities);
+
+            Console.WriteLine($"Total Attendees: {activities.Sum(x => x.Attendees)}");
 
             Console.ReadKey();
         }
