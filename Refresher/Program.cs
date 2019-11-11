@@ -86,6 +86,7 @@ namespace Refresher
             ListManager.WriteAll(activities);
 
             Console.WriteLine($"Total Attendees: {activities.Sum(x => x.Attendees)}");
+            Console.WriteLine($"Average Attendees: {activities.Sum(x => x.Attendees) / activities.Count}");
 
             Console.ReadKey();
         }
