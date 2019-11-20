@@ -148,30 +148,44 @@ namespace Refresher
         {
 
             List<int> found = new List<int>();
-
+            int currentSquare;
 
             //check squares
             for (int a = 0; a < 9; a++)
             {
                 for(int b = 0; b < 9; b++)
                 {
-                    long[] coord = Kata.SquareRegionFinder(a, b);
-                    //found = Kata.Search(board[coord[0]][coord[1]], found, out bool result);
-                    //if (!result)
-                    //{
-                    //    return false;
-                    //}
-                    Console.WriteLine($"a = {a}, b = {b}");
-                    Console.WriteLine($"X = {coord[0]}, Y = {coord[1]}");
-                    Console.WriteLine($"Result = {board[coord[0]][coord[1]]}");
-                    Console.WriteLine();
+                    long[] coord = SquareRegionFinder(a, b);
+                    currentSquare = board[coord[0]][coord[1]];
+                    if (!SquareAudit(found, currentSquare)) return false;
+                }
+                found.Clear();
+                
+            }
+
+            //check rows
+            for (int a = 0; a < 9; a++)
+            {
+                for (int b = 0; b < 9; b++)
+                {
+                    currentSquare = board[a][b];
+                    if (!SquareAudit(found, currentSquare)) return false;
+                }
+                found.Clear();
+
+            }
+
+            //check columns
+            for (int a = 0; a < 9; a++)
+            {
+                for (int b = 0; b < 9; b++)
+                {
+                    currentSquare = board[b][a];
+                    if(!SquareAudit(found, currentSquare)) return false;
                 }
                 found.Clear();
             }
 
-
-            //check rows
-            //check columns
             return true;
         }
 
@@ -182,18 +196,23 @@ namespace Refresher
             return new long[] { x , y };
         }
 
-        public static List<int> Search(int value, List<int> found, out bool result)
+        public static bool SquareAudit(List<int> found, int currentSquare)
         {
-            if (found.IndexOf(value) == -1)
+            if (found.IndexOf(currentSquare) == -1)
             {
-                result = true;
-                found.Add(value);
+                found.Add(currentSquare);
+                return true;
             }
-            else
-            {
-                result = false;
-            }
-            return found;
+            return false;
+        }
+
+        public static void BoardAudit(long a, long b, long[] coord, int result, List<int> found)
+        {
+            Console.WriteLine($"a = {a}, b = {b}");
+            Console.WriteLine($"X = {coord[0]}, Y = {coord[1]}");
+            Console.WriteLine($"Result = {result}");
+            Console.WriteLine($"Found = {string.Join(", ", found)}");
+            Console.WriteLine();
         }
     }
 }

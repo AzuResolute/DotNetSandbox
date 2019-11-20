@@ -95,7 +95,7 @@ namespace Refresher
             //Console.WriteLine($"X = {Kata.SquareRegionFinder(4,0)[0]}, Y = {Kata.SquareRegionFinder(4, 0)[1]}");
             //Console.WriteLine($"X = {Kata.SquareRegionFinder(5,0)[0]}, Y = {Kata.SquareRegionFinder(5, 0)[1]}");
 
-            int[][] sample = new int[][]
+            int[][] sampleTrue = new int[][]
             {
                   new int[] {5, 3, 4, 6, 7, 8, 9, 1, 2},
                   new int[] {6, 7, 2, 1, 9, 5, 3, 4, 8},
@@ -108,7 +108,21 @@ namespace Refresher
                   new int[] {3, 4, 5, 2, 8, 6, 1, 7, 9}
             };
 
-            Kata.ValidateSolution(sample);
+            int[][] sampleFalse = new int[][]
+            {
+                  new int[] {5, 3, 4, 6, 7, 8, 9, 1, 2},
+                  new int[] {6, 7, 2, 1, 9, 5, 3, 4, 8},
+                  new int[] {1, 9, 8, 3, 0, 2, 5, 6, 7},
+                  new int[] {8, 5, 0, 7, 6, 1, 4, 2, 3},
+                  new int[] {4, 2, 6, 8, 5, 3, 7, 9, 1},
+                  new int[] {7, 0, 3, 9, 2, 4, 8, 5, 6},
+                  new int[] {9, 6, 1, 5, 3, 7, 2, 8, 4},
+                  new int[] {2, 8, 7, 4, 1, 9, 6, 3, 5},
+                  new int[] {3, 0, 0, 2, 8, 6, 1, 7, 9}
+            };
+
+            Console.WriteLine($"{Kata.ValidateSolution(sampleTrue)}");
+            Console.WriteLine($"{Kata.ValidateSolution(sampleFalse)}");
 
             Console.ReadKey();
         }
