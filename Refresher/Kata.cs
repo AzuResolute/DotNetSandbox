@@ -151,12 +151,13 @@ namespace Refresher
 
 
             //check squares
-            for (int x = 1; x <= 9; x++)
+            for (int a = 1; a <= 9; a++)
             {
-                for(int y = 1; y <= 9; y++)
+                for(int b = 1; b <= 9; b++)
                 {
+                    long[] coordinates = Kata.SquareRegionFinder(a,b);
                     Kata.Search(1, found, out bool result);
-                    if (result)
+                    if (!result)
                     {
                         return false;
                     }
@@ -168,6 +169,12 @@ namespace Refresher
             //check rows
             //check columns
             return true;
+        }
+
+        public static long[] SquareRegionFinder(long a, long b)
+        {
+            long x = a/3;
+            return new long[] {1,2};
         }
 
         public static List<int> Search(int value, List<int> found, out bool result)
