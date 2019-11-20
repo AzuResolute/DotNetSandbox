@@ -125,5 +125,63 @@ namespace Refresher
             }
             return new HashSet<string>() { answer };
         }
+
+        public static long DivisibleCount(long x, long y, long k)
+        {
+            //long current = x;
+            //long found = 0;
+            //while(current <= y)
+            //{
+            //    found += current % k == 0 ? 1 : 0;
+            //    current++;
+            //}
+            //return found;
+
+            long divisible = (y / k) - (x / k);
+
+            if (x % k == 0)
+                return divisible + 1;
+            return divisible;
+        }
+
+        public static bool ValidateSolution(int[][] board)
+        {
+
+            List<int> found = new List<int>();
+
+
+            //check squares
+            for (int x = 1; x <= 9; x++)
+            {
+                for(int y = 1; y <= 9; y++)
+                {
+                    Kata.Search(1, found, out bool result);
+                    if (result)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            found.Clear();
+
+            //check rows
+            //check columns
+            return true;
+        }
+
+        public static List<int> Search(int value, List<int> found, out bool result)
+        {
+            if (found.IndexOf(value) == -1)
+            {
+                result = true;
+                found.Add(value);
+            }
+            else
+            {
+                result = false;
+            }
+            return found;
+        }
     }
 }

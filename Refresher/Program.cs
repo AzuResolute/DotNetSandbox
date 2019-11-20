@@ -77,16 +77,18 @@ namespace Refresher
             //}
 
 
-            List<Activity> activities = ListManager.LoadSampleData()
-                .Where(act => act.Category == "Social")
-                .OrderByDescending(act => act.Attendees)
-                .ThenByDescending(act => act.StartDate)
-                .ToList();
+            //List<Activity> activities = ListManager.LoadSampleData()
+            //    .Where(act => act.Category == "Social")
+            //    .OrderByDescending(act => act.Attendees)
+            //    .ThenByDescending(act => act.StartDate)
+            //    .ToList();
 
-            ListManager.WriteAll(activities);
+            //ListManager.WriteAll(activities);
 
-            Console.WriteLine($"Total Attendees: {activities.Sum(x => x.Attendees)}");
-            Console.WriteLine($"Average Attendees: {activities.Sum(x => x.Attendees) / activities.Count}");
+            //Console.WriteLine($"Total Attendees: {activities.Sum(x => x.Attendees)}");
+            //Console.WriteLine($"Average Attendees: {activities.Sum(x => x.Attendees) / activities.Count}");
+
+            Console.WriteLine(Kata.DivisibleCount(6, 11, 2));
 
             Console.ReadKey();
         }
