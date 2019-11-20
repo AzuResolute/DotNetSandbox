@@ -88,7 +88,14 @@ namespace Refresher
             //Console.WriteLine($"Total Attendees: {activities.Sum(x => x.Attendees)}");
             //Console.WriteLine($"Average Attendees: {activities.Sum(x => x.Attendees) / activities.Count}");
 
-            Console.WriteLine(Kata.DivisibleCount(6, 11, 2));
+            //Console.WriteLine($"X = {Kata.SquareRegionFinder(0,0)[0]}, Y = {Kata.SquareRegionFinder(0, 0)[1]}");
+            //Console.WriteLine($"X = {Kata.SquareRegionFinder(0,1)[0]}, Y = {Kata.SquareRegionFinder(0, 1)[1]}");
+            //Console.WriteLine($"X = {Kata.SquareRegionFinder(0,2)[0]}, Y = {Kata.SquareRegionFinder(0, 2)[1]}");
+            //Console.WriteLine($"X = {Kata.SquareRegionFinder(3,0)[0]}, Y = {Kata.SquareRegionFinder(3, 0)[1]}");
+            //Console.WriteLine($"X = {Kata.SquareRegionFinder(4,0)[0]}, Y = {Kata.SquareRegionFinder(4, 0)[1]}");
+            //Console.WriteLine($"X = {Kata.SquareRegionFinder(5,0)[0]}, Y = {Kata.SquareRegionFinder(5, 0)[1]}");
+
+            Kata.ValidateSolution();
 
             Console.ReadKey();
         }

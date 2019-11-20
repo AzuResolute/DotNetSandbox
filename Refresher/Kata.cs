@@ -144,23 +144,26 @@ namespace Refresher
             return divisible;
         }
 
-        public static bool ValidateSolution(int[][] board)
+        public static bool ValidateSolution(/*int[][] board*/)
         {
 
             List<int> found = new List<int>();
 
 
             //check squares
-            for (int a = 1; a <= 9; a++)
+            for (int a = 0; a < 9; a++)
             {
-                for(int b = 1; b <= 9; b++)
+                for(int b = 0; b < 9; b++)
                 {
-                    long[] coordinates = Kata.SquareRegionFinder(a,b);
-                    Kata.Search(1, found, out bool result);
-                    if (!result)
-                    {
-                        return false;
-                    }
+                    //long[] coordinates = Kata.SquareRegionFinder(a,b);
+                    //Kata.Search(1, found, out bool result);
+                    //if (!result)
+                    //{
+                    //    return false;
+                    //}
+                    Console.WriteLine($"a = {a}, b = {b}");
+                    Console.WriteLine($"X = {Kata.SquareRegionFinder(a, b)[0]}, Y = {Kata.SquareRegionFinder(a, b)[1]}");
+                    Console.WriteLine();
                 }
             }
 
@@ -173,8 +176,9 @@ namespace Refresher
 
         public static long[] SquareRegionFinder(long a, long b)
         {
-            long x = a/3;
-            return new long[] {1,2};
+            long x = 3 * (a / 3) + (b / 3);
+            long y = (b % 3) + 3 * (a % 3);
+            return new long[] { x , y };
         }
 
         public static List<int> Search(int value, List<int> found, out bool result)
